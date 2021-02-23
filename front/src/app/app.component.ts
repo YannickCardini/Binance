@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(
     private bianceApi: BinanceApiService
   ){
-    this.bianceApi.getOpenOrders();
+    this.bianceApi.getOpenOrders('ADAEUR').then(res => console.log(res[0]));
   }
 
 }

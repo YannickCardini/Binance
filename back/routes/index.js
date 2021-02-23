@@ -14,7 +14,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/openOders', function (req, res, next) {
   if (req.query && req.query.order)
-    client.openOrders({ symbol: req.query.order }).then(ord => res.json(ord))
+    client.openOrders({ symbol: req.query.order }).then(ord => res.send(ord))
   else
     res.status(400).send({
       message: 'Argument \'order\' manquant !'
