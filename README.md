@@ -1,5 +1,5 @@
 # Binance
-Front en angular et back en NodeJS qui utilise l'API de Binance pour visualiser l'évolution de mes cryptomonnaies.
+Front en angular et back en NodeJS qui utilise l'[API de Binance](https://binance-docs.github.io/apidocs/spot/en/#introduction) pour visualiser l'évolution de mes cryptomonnaies.
 
 ## Prérequis
 

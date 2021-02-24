@@ -12,13 +12,26 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/openOders', function (req, res, next) {
-  if (req.query && req.query.order)
-    client.openOrders({ symbol: req.query.order }).then(ord => res.send(ord))
+router.get('/openOrders', function (req, res, next) {
+  if (req.query && req.query.symbol)
+    client.openOrders({ symbol: req.query.symbol }).then(ord => res.send(ord))
   else
     res.status(400).send({
-      message: 'Argument \'order\' manquant !'
+      message: 'Argument \'symbol\' manquant !'
     });
+})
+
+router.get('/avgPrice', function (req, res, next) {
+  if (req.query && req.query.symbol)
+    client.avgPrice({ symbol: req.query.symbol }).then(price => res.send(price))
+  else
+    res.status(400).send({
+      message: 'Argument \'symbol\' manquant !'
+    });
+})
+
+router.get('/accountInfo', function (req, res, next) {
+  client.accountInfo().then(info => res.send(info))
 })
 
 module.exports = router;
