@@ -12,12 +12,12 @@ export class BinanceApiService {
   ) {
   }
 
-  getaccountInfo(): Promise<Account> {
-    return this.http.get<Account>(env.APIENDPOINT + 'accountInfo').toPromise();
+  getAccountInfo(): Promise<Account> {
+    return this.http.get<Account>(env.APIENDPOINT + 'binance/accountInfo').toPromise();
   }
 
-  getavgPrice(sym: string): Promise<AvgPriceResult| AvgPriceResult[]> {
-    return this.http.get<AvgPriceResult| AvgPriceResult[]>(env.APIENDPOINT + 'avgPrice', {
+  getAvgPrice(sym: string): Promise<AvgPriceResult| AvgPriceResult[]> {
+    return this.http.get<AvgPriceResult| AvgPriceResult[]>(env.APIENDPOINT + 'binance/avgPrice', {
       params: {
         symbol: sym
       }
@@ -25,12 +25,11 @@ export class BinanceApiService {
   }
 
   getOpenOrders(sym: string): Promise<QueryOrderResult[]> {
-    return this.http.get<QueryOrderResult[]>(env.APIENDPOINT + 'openOrders', {
+    return this.http.get<QueryOrderResult[]>(env.APIENDPOINT + 'binance/openOrders', {
       params: {
         symbol: sym
       }
     }).toPromise();
   }
-
 
 }
