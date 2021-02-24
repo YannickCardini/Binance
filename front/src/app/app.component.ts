@@ -7,12 +7,7 @@ import { BinanceApiService } from './services/binance-api.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Binance';
 
-  constructor(
-    private bianceApi: BinanceApiService
-  ){
-    this.bianceApi.getOpenOrders('ADAEUR').then(res => console.log(res[0]));
-  }
+  constructor(){}
 
 }
