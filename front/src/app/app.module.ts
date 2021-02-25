@@ -8,20 +8,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { BinanceComponent } from './binance/binance.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
+import { HomeComponent } from './home/home.component';
+import {MatTabsModule} from '@angular/material/tabs'; 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     BinanceComponent,
+    HomeComponent,
   ],
   imports: [
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatListModule,
     AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatListModule,
     MatSidenavModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,6 @@
 <!-- <div id="chartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div> -->
+<mat-spinner *ngIf="assets.length == 0" style="margin:50% auto;" color="secondary"></mat-spinner>
+
 <mat-list *ngFor="let asset of assets">
 	<mat-list-item>
 		<img matListIcon [src]="asset.icon">

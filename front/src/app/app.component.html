@@ -1,16 +1,30 @@
-<mat-drawer-container class="full-container">
-  <mat-drawer mode="side" opened>
+<mat-drawer-container class="full-container" *ngIf="innerWidth > minWidth">
+  <mat-drawer style="width: 234px;" mode="side" opened>
 
     <mat-nav-list>
       <h1 matSubheader>Menu</h1>
+      <mat-divider></mat-divider>
+
       <a mat-list-item routerLink="/">
         <mat-icon>home</mat-icon>
         <span class="label-menu">Home</span>
       </a>
+
+      <mat-divider></mat-divider>
+
       <a mat-list-item routerLink="/cryptos">
         <mat-icon>assessment</mat-icon>
-        <span class="label-menu">Cryptomonnaies</span>
+        <span class="label-menu">Cryptocurrency</span>
       </a>
+
+      <mat-divider></mat-divider>
+
+      <a mat-list-item routerLink="/">
+        <mat-icon>contact_page</mat-icon>
+        <span class="label-menu">Resume</span>
+      </a>
+
+      <mat-divider></mat-divider>
     </mat-nav-list>
 
   </mat-drawer>
@@ -18,3 +32,29 @@
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
+
+
+<mat-tab-group *ngIf="innerWidth <= minWidth" mat-align-tabs="center" color="primary">
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>home</mat-icon>
+    </ng-template>
+    <app-home></app-home>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>assessment</mat-icon>
+    </ng-template>
+    <app-binance></app-binance>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>contact_page</mat-icon>
+    </ng-template>
+    En construction
+  </mat-tab>
+
+</mat-tab-group>
