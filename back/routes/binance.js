@@ -30,6 +30,15 @@ router.get('/avgPrice', function (req, res, next) {
     });
 })
 
+router.get('/prices', function (req, res, next) {
+  if (req.query && req.query.symbol)
+    client.prices({ symbol: req.query.symbol }).then(price => res.send(price))
+  else
+    res.status(400).send({
+      message: 'Argument \'symbol\' manquant !'
+    });
+})
+
 router.get('/accountInfo', function (req, res, next) {
   client.accountInfo().then(info => res.send(info))
 })
