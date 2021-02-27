@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { BinanceApiService } from '../services/binance-api.service';
-import * as CanvasJS from '../../canvasjs.min';
 import { Account, AssetBalance } from 'binance-api-node';
 import { MyAssets } from '../models/my-assets.model';
 
@@ -28,9 +27,7 @@ export class BinanceComponent implements OnInit {
     let asset: MyAssets;
     for (let i = 0; i < balances.length; i++) {
       const bal = balances[i];
-      console.log(bal)
       let price = await this.bianceApi.getPrice(bal.asset + "USDT");
-      console.log(price)
       asset = {
         quantite: +bal.free + +bal.locked,
         nom: bal.asset,
@@ -42,26 +39,13 @@ export class BinanceComponent implements OnInit {
       this.assets.push(asset);
     }
     this.loaded = true;
-    // prices.forEach(price =>{
-    //   console.log(price.currency)
-    //   for (let i = 0; i < balances.length; i++) {
-    //     const el = balances[i];
-    //     if(el.asset === price.currency){
-    //       asset = {
-    //         quantite: +el.free + +el.locked,
-    //         nom: el.asset,
-    //         icon: this.getAssetIcon(el.asset),
-    //         prix: +price.price
-    //       }
-    //       this.assets.push(asset)
-    //     }
-    //   }
-    // })
   }
 
   getAssetIcon(asset: string): string {
     let icon = asset.toLowerCase();
     return './assets/svg/' + icon + '.svg';
   }
+
+  
 
 }

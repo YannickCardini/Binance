@@ -14,17 +14,23 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ResumeComponent } from './resume/resume.component';
+import { GraphComponent } from './binance/graph/graph.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
     AppComponent,
     BinanceComponent,
     HomeComponent,
+    ResumeComponent,
+    GraphComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    GoogleChartsModule,
     HttpClientModule,
     MatListModule,
     MatSidenavModule,
