@@ -24,6 +24,16 @@ export class BinanceApiService {
     }).toPromise();
   }
 
+  getPrice(sym: string): Promise<Object> {
+    if(sym === "USDTUSDT")
+      return new Promise(resolve => resolve({"USDTUSDT":1.0}))
+    return this.http.get<Object>(env.APIENDPOINT + 'binance/prices', {
+      params: {
+        symbol: sym
+      }
+    }).toPromise();
+  }
+
   getOpenOrders(sym: string): Promise<QueryOrderResult[]> {
     return this.http.get<QueryOrderResult[]>(env.APIENDPOINT + 'binance/openOrders', {
       params: {

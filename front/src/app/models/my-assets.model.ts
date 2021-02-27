@@ -3,4 +3,5 @@ export class MyAssets{
 	nom: string;
 	prix: number;
 	quantite: number;
+	value: number;
 }
