@@ -12,6 +12,18 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/candles', function (req, res, next) {
+  console.log(req.query.interval)
+  console.log(req.query.symbol)
+
+  if (req.query && req.query.symbol && req.query.interval)
+    client.candles({ symbol: req.query.symbol, interval: req.query.interval }).then(candles => res.send(candles))
+  else
+    res.status(400).send({
+      message: 'Arguments manquants !'
+    });
+})
+
 router.get('/openOrders', function (req, res, next) {
   if (req.query && req.query.symbol)
     client.openOrders({ symbol: req.query.symbol }).then(ord => res.send(ord))
