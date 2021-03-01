@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { env } from '../environments/environment'
-import { Account, AvgPriceResult, CandleChartInterval, QueryOrderResult } from 'binance-api-node';
+import { Account, AvgPriceResult, CandleChartInterval, CandleChartResult, QueryOrderResult } from 'binance-api-node';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,9 +24,9 @@ export class BinanceApiService {
     }).toPromise();
   }
 
-  getCandles(sym: string, interval: string): Promise<CandleChartInterval[]>{
+  getCandles(sym: string, interval: string): Promise<CandleChartResult[]>{
     console.log(sym)
-    return this.http.get<CandleChartInterval[]>(env.APIENDPOINT + 'binance/candles', {
+    return this.http.get<CandleChartResult[]>(env.APIENDPOINT + 'binance/candles', {
       params: {
         symbol :sym,
         interval: interval

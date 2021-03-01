@@ -13,9 +13,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/candles', function (req, res, next) {
-  console.log(req.query.interval)
-  console.log(req.query.symbol)
-
   if (req.query && req.query.symbol && req.query.interval)
     client.candles({ symbol: req.query.symbol, interval: req.query.interval }).then(candles => res.send(candles))
   else
@@ -52,6 +49,7 @@ router.get('/prices', function (req, res, next) {
 })
 
 router.get('/accountInfo', function (req, res, next) {
+  console.log("Acount info")
   client.accountInfo().then(info => res.send(info))
 })
 

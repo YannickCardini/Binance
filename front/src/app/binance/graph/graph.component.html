@@ -1,1 +1,1 @@
-<google-chart [type]="type" [data]="myData"></google-chart>
+<google-chart *ngIf="chart.data.length > 0" [type]="chart.type" [data]="chart.data" [columns]="chart.columns" [title]="chart.title" [options]="chart.options"></google-chart>
