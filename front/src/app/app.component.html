@@ -5,26 +5,13 @@
       <h1 matSubheader>Menu</h1>
       <mat-divider></mat-divider>
 
-      <a mat-list-item routerLink="/">
-        <mat-icon>home</mat-icon>
-        <span class="label-menu">Home</span>
-      </a>
-
-      <mat-divider></mat-divider>
-
-      <a mat-list-item routerLink="/cryptos">
-        <mat-icon>assessment</mat-icon>
-        <span class="label-menu">Cryptocurrency</span>
-      </a>
-
-      <mat-divider></mat-divider>
-
-      <a mat-list-item routerLink="/resume">
-        <mat-icon>contact_page</mat-icon>
-        <span class="label-menu">Resume</span>
-      </a>
-
-      <mat-divider></mat-divider>
+      <span *ngFor="let router of routerPage">
+        <a mat-list-item [routerLink]="router.link">
+          <mat-icon>{{router.icon}}</mat-icon>
+          <span class="label-menu">{{router.name}}</span>
+        </a>
+        <mat-divider></mat-divider>
+      </span>
     </mat-nav-list>
 
   </mat-drawer>
@@ -34,27 +21,8 @@
 </mat-drawer-container>
 
 
-<mat-tab-group *ngIf="innerWidth <= minWidth" mat-align-tabs="center" color="primary">
+<nav mat-tab-nav-bar mat-align-tabs="center" *ngIf="innerWidth <= minWidth">
+  <a *ngFor="let router of routerPage" mat-tab-link [routerLink]="router.link"> <mat-icon>{{router.icon}}</mat-icon> </a>
+</nav>
 
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon>home</mat-icon>
-    </ng-template>
-    <app-home></app-home>
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon>assessment</mat-icon>
-    </ng-template>
-    <app-binance></app-binance>
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon>contact_page</mat-icon>
-    </ng-template>
-    <app-resume></app-resume>
-  </mat-tab>
-
-</mat-tab-group>
+<router-outlet></router-outlet>

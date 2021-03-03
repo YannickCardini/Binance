@@ -1,1 +1,13 @@
-<google-chart *ngIf="chart.data.length > 0" [type]="chart.type" [data]="chart.data" [columns]="chart.columns" [title]="chart.title" [options]="chart.options"></google-chart>
+<mat-card-content *ngIf="chart.data.length > 0">
+	<mat-card-header>
+		<div mat-card-avatar class="example-header-image"></div>
+		<mat-card-subtitle>Interval</mat-card-subtitle>
+		<mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" min="0"
+			max="14">
+		</mat-slider>
+	</mat-card-header>
+	<mat-card-content>
+		<google-chart  [type]="chart.type" [data]="chart.data" [columns]="chart.columns"
+			[title]="chart.title" [options]="chart.options"></google-chart>
+	</mat-card-content>
+</mat-card-content>

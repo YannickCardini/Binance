@@ -14,9 +14,27 @@ export class AppComponent {
   }
   public innerWidth: number;
   public minWidth: number = 600;
+  routerPage: any = [
+    {
+      icon: 'home',
+      name: 'home',
+      link: '/'
+    },
+    {
+      icon: 'assessment',
+      name: 'Cryptocurrency',
+      link: '/cryptos'
+    },
+    {
+      icon: 'contact_page',
+      name: 'Resume',
+      link: '/resume'
+    },
+  ];
 
   constructor() {
     this.innerWidth = window.innerWidth;
+    
   }
 
 }

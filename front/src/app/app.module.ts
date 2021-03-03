@@ -14,6 +14,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCardModule } from '@angular/material/card';
 import { ResumeComponent } from './resume/resume.component';
 import { GraphComponent } from './binance/graph/graph.component';
 import { GoogleChartsModule } from 'angular-google-charts';
@@ -39,6 +41,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatGridListModule,
+    MatSliderModule,
+    MatCardModule,
     NgxSkeletonLoaderModule
   ],
   providers: [],

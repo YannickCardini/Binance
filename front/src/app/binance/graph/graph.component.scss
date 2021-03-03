@@ -1,6 +1,15 @@
+$breakpoint-tablet: 768px;
+
 google-chart {
-	width: 60%;
-	height: 60%;
-	margin:5% auto;
-	border: 1px solid black;
+	width: 95%;
+	height: 95%;
+	@media (max-width: $breakpoint-tablet) {
+		width: 95%;
+		height: 95%;
+	}
 }
+
+.example-header-image {
+	background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+	background-size: cover;
+  }
