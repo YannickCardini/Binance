@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ResumeComponent } from './resume/resume.component';
 import { GraphComponent } from './binance/graph/graph.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatGridListModule,
     MatSliderModule,
     MatCardModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
