@@ -1,5 +1,7 @@
-<mat-drawer-container class="full-container" *ngIf="innerWidth > minWidth">
-  <mat-drawer style="width: 234px;" mode="side" opened>
+
+
+<mat-drawer-container class="full-container" >
+  <mat-drawer #drawer style="width: 234px;" opened>
 
     <mat-nav-list>
       <h1 matSubheader>Menu</h1>
@@ -16,13 +18,13 @@
 
   </mat-drawer>
   <mat-drawer-content>
+     <mat-toolbar >
+      <button mat-icon-button  class="menu-icon" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="label-menu">Yannick.com</span>
+    </mat-toolbar>
+    
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
-
-
-<nav mat-tab-nav-bar mat-align-tabs="center" *ngIf="innerWidth <= minWidth">
-  <a *ngFor="let router of routerPage" mat-tab-link [routerLink]="router.link"> <mat-icon>{{router.icon}}</mat-icon> </a>
-</nav>
-
-<router-outlet></router-outlet>

@@ -1,21 +1,21 @@
-<mat-toolbar >
+<ngx-skeleton-loader animation="progress-dark" *ngIf="!loaded" count="1"></ngx-skeleton-loader>
+<div style="overflow-y: auto;">
+	<mat-list>
+		<span *ngFor="let asset of assets">
+			<mat-action-list>
+				<button mat-list-item [routerLink]="'/cryptos/' + asset.nom">
+					<img matListIcon [src]="asset.icon">
+					<h3 matLine>{{asset.nom}}</h3>
+					<p matLine><i>Quantity: </i>&nbsp;{{asset.quantite}}</p>
+					<p matLine><i>Value: </i>&nbsp;<span class="dollar">${{(asset.value).toFixed(2)}}</span></p>
+					<span style="color:green">${{asset.prix.toFixed(2)}}</span>
+				</button>
+			</mat-action-list>
+			<mat-divider></mat-divider>
+		</span>
+	</mat-list>
+</div>
+<mat-toolbar style="position: fixed;bottom: 0;">
 	Total value: &nbsp;
 	<span class="dollar" *ngIf="totalValue > 0"> ${{totalValue.toFixed(2)}}</span>
 </mat-toolbar>
-<ngx-skeleton-loader *ngIf="!loaded" count="1" appearance="line"></ngx-skeleton-loader>
-
-<mat-list>
-	<span *ngFor="let asset of assets">
-		<mat-action-list>
-			<button mat-list-item [routerLink]="'/cryptos/' + asset.nom">
-				<img matListIcon [src]="asset.icon">
-				<h3 matLine>{{asset.nom}}</h3>
-				<p matLine><i>Quantity: </i>&nbsp;{{asset.quantite}}</p>
-				<p matLine><i>Value: </i>&nbsp;<span class="dollar">${{(asset.value).toFixed(2)}}</span></p>
-				<span style="color:green">${{asset.prix.toFixed(2)}}</span>
-			</button>
-		</mat-action-list>
-		<mat-divider></mat-divider>
-	</span>
-</mat-list>
-
