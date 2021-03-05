@@ -10,6 +10,10 @@ import { Color, Label } from 'ng2-charts';
 })
 export class GraphComponent implements OnInit {
 
+  title: string;
+  interval: string = '1d';
+  sym: string;
+  backgroundImg: string;
   lineChartData: ChartDataSets[] = [];
   lineChartLabels: Date[];
   lineChartOptions = {
@@ -21,9 +25,19 @@ export class GraphComponent implements OnInit {
           displayFormats: {
             quarter: 'MMM YYYY'
           }
+        },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Price in $'
         }
       }]
-    }
+    },
+    yHighlightRange: {
+      begin: 0.5,
+      end: 0.6
+    },
   };
   lineChartColors: Color[] = [
     {
@@ -35,10 +49,7 @@ export class GraphComponent implements OnInit {
   lineChartPlugins = [];
   lineChartType: string = 'line';
 
-  title: string;
-  interval: string = '1d';
-  sym: string;
-  backgroundImg: string;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -64,14 +75,15 @@ export class GraphComponent implements OnInit {
 
   async getCandles(sym: string, interval: string): Promise<void> {
     const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
-    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: "ada" }]
+    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym }]
     this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
   }
 
   intervalChange(value: number) {
     const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
       '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
-    this.getCandles(this.sym,intervals[value]);
+    this.interval = intervals[value];
+    this.getCandles(this.sym, this.interval);
   }
 
 }

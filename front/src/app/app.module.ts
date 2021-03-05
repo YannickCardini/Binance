@@ -18,7 +18,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { ResumeComponent } from './resume/resume.component';
 import { GraphComponent } from './binance/graph/graph.component';
-import { GoogleChartsModule } from 'angular-google-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule } from 'ng2-charts';
 
@@ -35,7 +34,6 @@ import { ChartsModule } from 'ng2-charts';
     BrowserModule,
     BrowserAnimationsModule,
     ChartsModule,
-    GoogleChartsModule,
     HttpClientModule,
     MatListModule,
     MatSidenavModule,
