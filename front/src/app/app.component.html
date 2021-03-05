@@ -1,7 +1,5 @@
-
-
-<mat-drawer-container class="full-container" >
-  <mat-drawer #drawer style="width: 234px;" opened>
+<!-- <mat-drawer-container class="full-container" >
+  <mat-drawer #drawer style="width: 234px;" >
 
     <mat-nav-list>
       <h1 matSubheader>Menu</h1>
@@ -23,8 +21,32 @@
         <mat-icon>menu</mat-icon>
       </button>
       <span class="label-menu">Yannick.com</span>
+      <div fxFlex fxLayoutAlign="flex-end center">
+      <a mat-list-item *ngFor="let router of routerPage" [routerLink]="router.link">
+        <span class="label-menu">{{router.name}}</span>
+      </a>
+      </div>
     </mat-toolbar>
     
     <router-outlet></router-outlet>
   </mat-drawer-content>
-</mat-drawer-container>
+</mat-drawer-container> -->
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <a class="navbar-brand" [routerLink]="'/'"><img src="../assets/money_bag.png" width="45px"></a>
+
+  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    &#9776;
+  </button>
+
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <ul class="navbar-nav">
+      <li class="nav-item active" *ngFor="let router of routerPage">
+        <a class="nav-link" [routerLink]="router.link" (click)="isMenuCollapsed = true">{{router.name}}</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

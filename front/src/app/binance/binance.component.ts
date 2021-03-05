@@ -31,7 +31,7 @@ export class BinanceComponent implements OnInit {
       asset = {
         quantite: +bal.free + +bal.locked,
         nom: bal.asset,
-        icon: this.getAssetIcon(bal.asset),
+        icon: this.bianceApi.getAssetIcon(bal.asset),
         prix: +price[bal.asset + "USDT"],
         value: +price[bal.asset + "USDT"] * (+bal.free + +bal.locked)
       }
@@ -41,10 +41,7 @@ export class BinanceComponent implements OnInit {
     this.loaded = true;
   }
 
-  getAssetIcon(asset: string): string {
-    let icon = asset.toLowerCase();
-    return './assets/svg/' + icon + '.svg';
-  }
+
 
   
 

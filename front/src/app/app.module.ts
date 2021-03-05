@@ -20,6 +20,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { GraphComponent } from './binance/graph/graph.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    ChartsModule,
     GoogleChartsModule,
     HttpClientModule,
     MatListModule,
@@ -45,7 +47,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatSliderModule,
     MatCardModule,
     NgxSkeletonLoaderModule,
-    NgbModule
+    NgbModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

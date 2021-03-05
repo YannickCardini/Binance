@@ -1,13 +1,31 @@
-<mat-card-content *ngIf="chart.data.length > 0">
-	<mat-card-header>
-		<div mat-card-avatar class="example-header-image"></div>
-		<mat-card-subtitle>Interval</mat-card-subtitle>
-		<mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" min="0"
-			max="14">
-		</mat-slider>
-	</mat-card-header>
-	<mat-card-content>
-		<google-chart  [type]="chart.type" [data]="chart.data" [columns]="chart.columns"
-			[title]="chart.title" [options]="chart.options"></google-chart>
-	</mat-card-content>
-</mat-card-content>
+<div class="main-div" *ngIf="lineChartData.length > 0">
+	<mat-card class="example-card">
+		<mat-card-header>
+			<div mat-card-avatar class="example-header-image" [style]="backgroundImg"></div>
+			<mat-card-title>{{title}}</mat-card-title>
+			<mat-card-subtitle>{{lineChartType}} chart</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-actions style="text-align: center;">
+			<span style="display: block;">Interval:</span>
+			<mat-slider thumbLabel [displayWith]="formatLabel" (change)="intervalChange($event.value)" tickInterval="1"
+				min="0" max="14"></mat-slider>
+		</mat-card-actions>
+		<div class="chartjs-block">
+			<canvas baseChart 
+				[datasets]="lineChartData" 
+				[labels]="lineChartLabels" 
+				[options]="lineChartOptions"
+				[colors]="lineChartColors" 
+				[legend]="lineChartLegend" 
+				[chartType]="lineChartType" 
+				[plugins]="lineChartPlugins">
+			</canvas>
+		</div>
+		<!-- <mat-card-content style="text-align: center;">
+			<p>
+				You can adjust the interval between each point with the slider below.
+			</p>
+		</mat-card-content> -->
+
+	</mat-card>
+</div>

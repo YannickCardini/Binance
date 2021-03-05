@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BinanceApiService } from 'src/app/services/binance-api.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ChartType } from 'angular-google-charts';
-import { CandleChartInterval } from 'binance-api-node';
-
+import { ChartDataSets } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
@@ -11,24 +10,35 @@ import { CandleChartInterval } from 'binance-api-node';
 })
 export class GraphComponent implements OnInit {
 
-
-  interval: string = '1m';
-  chart = {
-    title: '',
-    type: ChartType.LineChart,
-    columns: [],
-    data: [],
-    options: {
-      legend: { position: "none" },
-      subtitle: 'in dollars (USD)',
-      vAxis: {
-        title: 'Price in dollar'
-      },
-      hAxis: {
-        title: 'Time interval: ' + this.interval
-      },
+  lineChartData: ChartDataSets[] = [];
+  lineChartLabels: Date[];
+  lineChartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            quarter: 'MMM YYYY'
+          }
+        }
+      }]
     }
   };
+  lineChartColors: Color[] = [
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,255,0,0.28)',
+    },
+  ];
+  lineChartLegend: boolean = true;
+  lineChartPlugins = [];
+  lineChartType: string = 'line';
+
+  title: string;
+  interval: string = '1d';
+  sym: string;
+  backgroundImg: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,29 +46,32 @@ export class GraphComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.chart
     this.route.paramMap
-      .subscribe((res: ParamMap) => this.getCandles(res.get('sym')));
-
+      .subscribe((res: ParamMap) => {
+        this.sym = res.get('sym');
+        this.title = this.sym + " chart";
+        this.backgroundImg = "background-image: url(" + this.bianceApi.getAssetIcon(this.sym) + ")";
+        this.getCandles(this.sym, this.interval);
+      });
   }
 
   formatLabel(value: number) {
     const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
-    '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
+      '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
     this.interval = intervals[value];
     return this.interval;
   }
 
-  async getCandles(sym: string): Promise<void> {
-    this.chart.columns = [this.interval, sym];
-    this.chart.title += sym + " chart";
-    const candles = await this.bianceApi.getCandles(sym + "USDT", this.interval);
-    let i = 0;
-    candles.forEach(candle => {
-      i++;
-      this.chart.data.push([new Date(candle.openTime), +candle.open])
-    })
-    console.log(this.chart.data)
+  async getCandles(sym: string, interval: string): Promise<void> {
+    const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
+    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: "ada" }]
+    this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
+  }
+
+  intervalChange(value: number) {
+    const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
+      '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
+    this.getCandles(this.sym,intervals[value]);
   }
 
 }

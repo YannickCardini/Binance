@@ -1,6 +1,12 @@
+
+<div class="total-value">
+	<span class="total-value">Total value:</span>
+	<span class="dollar" style="font-size: 26px;" *ngIf="totalValue > 0"> ${{totalValue.toFixed(2)}}</span>
+</div>
 <ngx-skeleton-loader animation="progress-dark" *ngIf="!loaded" count="1"></ngx-skeleton-loader>
 <div style="overflow-y: auto;">
 	<mat-list>
+		<mat-divider></mat-divider>
 		<span *ngFor="let asset of assets">
 			<mat-action-list>
 				<button mat-list-item [routerLink]="'/cryptos/' + asset.nom">
@@ -15,7 +21,3 @@
 		</span>
 	</mat-list>
 </div>
-<mat-toolbar style="position: fixed;bottom: 0;">
-	Total value: &nbsp;
-	<span class="dollar" *ngIf="totalValue > 0"> ${{totalValue.toFixed(2)}}</span>
-</mat-toolbar>

@@ -1,5 +1,4 @@
 import { Component, HostListener } from '@angular/core';
-import { BinanceApiService } from './services/binance-api.service';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +11,13 @@ export class AppComponent {
   onResize(event) {
     this.innerWidth = window.innerWidth;
   }
+  public isMenuCollapsed = true;
   public innerWidth: number;
   public minWidth: number = 600;
   routerPage: any = [
     {
       icon: 'home',
-      name: 'home',
+      name: 'Home',
       link: '/'
     },
     {
@@ -34,7 +34,8 @@ export class AppComponent {
 
   constructor() {
     this.innerWidth = window.innerWidth;
-    
   }
 
 }
+
+

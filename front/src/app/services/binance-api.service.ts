@@ -16,6 +16,11 @@ export class BinanceApiService {
     return this.http.get<Account>(env.APIENDPOINT + 'binance/accountInfo').toPromise();
   }
 
+  getAssetIcon(asset: string): string {
+    let icon = asset.toLowerCase();
+    return './assets/svg/' + icon + '.svg';
+  }
+
   getAvgPrice(sym: string): Promise<AvgPriceResult| AvgPriceResult[]> {
     return this.http.get<AvgPriceResult| AvgPriceResult[]>(env.APIENDPOINT + 'binance/avgPrice', {
       params: {
