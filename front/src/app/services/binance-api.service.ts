@@ -30,7 +30,6 @@ export class BinanceApiService {
   }
 
   getCandles(sym: string, interval: string): Promise<CandleChartResult[]>{
-    console.log(sym)
     return this.http.get<CandleChartResult[]>(env.APIENDPOINT + 'binance/candles', {
       params: {
         symbol :sym,

@@ -1,16 +1,22 @@
 .example-header-image {
-	
 	background-size: cover;
-  }
-  .example-card {
-	  width: 80%;
+}
+.example-card {
+	width: 80%;
 	max-width: 850px;
-  }
-  
-  
-  .main-div{
+	@media only screen and (max-width : 850px) {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.main-div {
 	height: 90vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  }
+}
+
+mat-slider{
+	margin-top: 2%;
+}

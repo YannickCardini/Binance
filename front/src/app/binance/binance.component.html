@@ -13,8 +13,8 @@
 					<img matListIcon [src]="asset.icon">
 					<h3 matLine>{{asset.nom}}</h3>
 					<p matLine><i>Quantity: </i>&nbsp;{{asset.quantite}}</p>
-					<p matLine><i>Value: </i>&nbsp;<span class="dollar">${{(asset.value).toFixed(2)}}</span></p>
-					<span style="color:green">${{asset.prix.toFixed(2)}}</span>
+					<p matLine><i>Prix à l'unité: </i>&nbsp;<span class="dollar">${{asset.prix.toFixed(2)}}</span></p>
+					<span style="color:green">${{asset.value.toFixed(2)}}</span>
 				</button>
 			</mat-action-list>
 			<mat-divider></mat-divider>
