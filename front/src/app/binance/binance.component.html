@@ -1,3 +1,23 @@
+<!-- Modal -->
+<ng-template #content let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title" id="modal-basic-title">Buffa coin</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		<video controls width="100%" autoplay>
+		
+			<source src="../../assets/video/rick_roll.mp4"
+					type="video/mp4" >
+		
+			Sorry, your browser doesn't support embedded videos.
+		</video>
+	</div>
+  </ng-template>
+
+
 
 <div class="total-value">
 	<span class="total-value">Total value:</span>
@@ -19,5 +39,18 @@
 			</mat-action-list>
 			<mat-divider></mat-divider>
 		</span>
+
+		<!--Buffa coin-->
+		<mat-action-list >
+			<button mat-list-item (click)="open(content)">
+				<img matListIcon src="./assets/svg/buffa.png">
+				<h3 matLine>BUFFA</h3>
+				<p matLine><i>Quantity: </i>&nbsp;0</p>
+				<p matLine><i>Prix à l'unité: </i>&nbsp;<span class="dollar">$100.00</span></p>
+				<span style="color:green">$0.00</span>
+			</button>
+		</mat-action-list>
+		<mat-divider></mat-divider>
+
 	</mat-list>
 </div>

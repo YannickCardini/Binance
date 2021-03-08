@@ -1,5 +1,14 @@
-div {
-    margin: 2%;
-    height: 85%;
-    width: 65%;
+.center-div {
+    margin: 0 auto;
+    width: 700px; 
+    height: calc(96% - 135px);
+    @media only screen and (max-width : 728px) {
+		width: 96%;
+	}
+
+}
+
+button{
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
