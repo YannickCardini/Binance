@@ -6,10 +6,10 @@
 }
 
 .bg {
-    -webkit-clip-path: polygon(72% 74%, 100% 27%, 100% 100%, 5% 100%);
-    clip-path: polygon(72% 74%, 100% 27%, 100% 100%, 5% 100%);
     z-index: -1;
     background-color: #007bff;
+    -webkit-clip-path: polygon(72% 74%, 100% 27%, 100% 100%, 5% 100%);
+    clip-path: polygon(72% 74%, 100% 27%, 100% 100%, 5% 100%);
 }
 
 .bg2 {
@@ -25,6 +25,9 @@
     height: auto;
     align-self: center;
     margin: 0 50px;
+    @media only screen and (max-width: 500px){
+        margin: 0;
+    }
 }
 
 ul {
@@ -78,7 +81,10 @@ img {
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 8vw;
+    @media only screen and (min-width:700px){
+        font-size: 50px;
+    }
     margin-top: 0;
 }
 
@@ -91,8 +97,13 @@ article {
     display: block;
     text-align: left;
     width: 650px;
+    @media only screen and (max-width: 700px){
+        width: 300px;
+        font-size:15px;
+    }
     margin: 4% auto;
 }
+
 a {
     color: #dc8100;
     text-decoration: none;
