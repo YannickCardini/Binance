@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  APIENDPOINT: 'http://152.228.137.245:3000',
 };

@@ -74,6 +74,8 @@ export class GraphComponent implements OnInit {
   }
 
   async getCandles(sym: string, interval: string): Promise<void> {
+    if(sym == "USDT")
+      sym = "USDC"
     const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
     this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym }]
     this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
@@ -82,8 +84,8 @@ export class GraphComponent implements OnInit {
   intervalChange(value: number) {
     const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
       '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
-    this.interval = intervals[value];
-    this.getCandles(this.sym, this.interval);
+      this.interval = intervals[value];
+    this.getCandles(this.sym,this.interval);
   }
 
 }
