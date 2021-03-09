@@ -12,4 +12,8 @@ export class ResumeComponent implements OnInit {
   ngOnInit() {
   }
 
+  downloadButton(): void{
+    window.open('../../assets/video/rick_roll.mp4');
+  }
+
 }

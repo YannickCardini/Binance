@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { env } from '../environments/environment'
-import { Account, AvgPriceResult, CandleChartInterval, CandleChartResult, QueryOrderResult } from 'binance-api-node';
+import { environment } from '../../environments/environment'
+import { Account, AvgPriceResult, CandleChartResult, QueryOrderResult } from 'binance-api-node';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,7 @@ export class BinanceApiService {
   }
 
   getAccountInfo(): Promise<Account> {
-    return this.http.get<Account>(env.APIENDPOINT + 'binance/accountInfo').toPromise();
+    return this.http.get<Account>(environment.APIENDPOINT + 'binance/accountInfo').toPromise();
   }
 
   getAssetIcon(asset: string): string {
@@ -22,7 +22,7 @@ export class BinanceApiService {
   }
 
   getAvgPrice(sym: string): Promise<AvgPriceResult| AvgPriceResult[]> {
-    return this.http.get<AvgPriceResult| AvgPriceResult[]>(env.APIENDPOINT + 'binance/avgPrice', {
+    return this.http.get<AvgPriceResult| AvgPriceResult[]>(environment.APIENDPOINT + 'binance/avgPrice', {
       params: {
         symbol: sym
       }
@@ -30,7 +30,7 @@ export class BinanceApiService {
   }
 
   getCandles(sym: string, interval: string): Promise<CandleChartResult[]>{
-    return this.http.get<CandleChartResult[]>(env.APIENDPOINT + 'binance/candles', {
+    return this.http.get<CandleChartResult[]>(environment.APIENDPOINT + 'binance/candles', {
       params: {
         symbol :sym,
         interval: interval
@@ -41,7 +41,7 @@ export class BinanceApiService {
   getPrice(sym: string): Promise<Object> {
     if(sym === "USDTUSDT")
       return new Promise(resolve => resolve({"USDTUSDT":1.0}))
-    return this.http.get<Object>(env.APIENDPOINT + 'binance/prices', {
+    return this.http.get<Object>(environment.APIENDPOINT + 'binance/prices', {
       params: {
         symbol: sym
       }
@@ -49,7 +49,7 @@ export class BinanceApiService {
   }
 
   getOpenOrders(sym: string): Promise<QueryOrderResult[]> {
-    return this.http.get<QueryOrderResult[]>(env.APIENDPOINT + 'binance/openOrders', {
+    return this.http.get<QueryOrderResult[]>(environment.APIENDPOINT + 'binance/openOrders', {
       params: {
         symbol: sym
       }

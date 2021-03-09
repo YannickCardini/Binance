@@ -30,11 +30,4 @@ Lancer le serveur:
 npm start
 ```
 
-## Issues
-
-Si vous obtenez l'erreure suivante:
-```
-Timestamp for this request was 1000ms ahead of the server's time.
-```
-Il faut aller dans les paramètres de votre système d'exploitation et synchroniser 'date & time' puis relancer le serveur.
 
