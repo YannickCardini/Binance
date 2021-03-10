@@ -19,6 +19,6 @@ docker build -t binance-angular .
 
 Run docker image:
 ```
-docker run -p ????:???? -d binance-angular
+docker run -p 80:80 -d binance-angular
 ```
 
