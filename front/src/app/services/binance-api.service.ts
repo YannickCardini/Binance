@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment'
-import { Account, AvgPriceResult, CandleChartResult, QueryOrderResult, TradeResult } from 'binance-api-node';
+import { environment } from 'src/environments/environment'
+import { Account, AvgPriceResult, CandleChartResult, QueryOrderResult } from 'binance-api-node';
 @Injectable({
   providedIn: 'root'
 })
