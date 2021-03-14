@@ -1,31 +1,73 @@
-<div class="main-div" *ngIf="lineChartData.length > 0">
-	<mat-card class="example-card">
-		<mat-card-header>
-			<div mat-card-avatar class="example-header-image" [style]="backgroundImg"></div>
-			<mat-card-title>{{title}}</mat-card-title>
-			<mat-card-subtitle>{{lineChartType}} chart</mat-card-subtitle>
-		</mat-card-header>
-		<mat-card-actions style="text-align: center;">
-			<span style="display: block;">Interval({{interval}}):</span>
-			<mat-slider thumbLabel [displayWith]="formatLabel" (change)="intervalChange($event.value)" tickInterval="1" value="11"
-				min="0" max="14"></mat-slider>
-		</mat-card-actions>
-		<div class="chartjs-block">
-			<canvas baseChart 
-				[datasets]="lineChartData" 
-				[labels]="lineChartLabels" 
-				[options]="lineChartOptions"
-				[colors]="lineChartColors" 
-				[legend]="lineChartLegend" 
-				[chartType]="lineChartType" 
-				[plugins]="lineChartPlugins">
-			</canvas>
-		</div>
-		<!-- <mat-card-content style="text-align: center;">
-			<p>
-				You can adjust the interval between each point with the slider below.
-			</p>
-		</mat-card-content> -->
+<div class="container">
+	<div class="row align-items-start">
 
-	</mat-card>
+		<!-- Graph -->
+		<div class="col" *ngIf="lineChartData.length > 0">
+			<mat-card class="example-card">
+				<mat-card-header>
+					<div mat-card-avatar class="example-header-image" [style]="backgroundImg"></div>
+					<mat-card-title>{{title}}</mat-card-title>
+					<mat-card-subtitle>{{lineChartType}} chart</mat-card-subtitle>
+				</mat-card-header>
+				<mat-card-actions style="text-align: center;">
+					<span style="display: block;">Interval({{interval}}):</span>
+					<mat-slider thumbLabel [displayWith]="formatLabel" (change)="intervalChange($event.value)"
+						tickInterval="1" value="11" min="0" max="14"></mat-slider>
+				</mat-card-actions>
+				<div class="chartjs-block">
+					<canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+						[colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+						[plugins]="lineChartPlugins">
+					</canvas>
+				</div>
+
+			</mat-card>
+		</div>
+
+		<!-- Trade Info -->
+		<div class="col" *ngIf="rendement != null">
+			<mat-card class="example-card">
+
+				<mat-card-header>
+					<div mat-card-avatar class="example-header-image" [style]="backgroundImg"></div>
+					<mat-card-title>Trade info</mat-card-title>
+					<mat-card-subtitle>{{sym}}</mat-card-subtitle>
+				</mat-card-header>
+
+				<mat-card-content>
+					<div>
+						<p> <b>Investit:&nbsp;
+								<span style="color: orange;">{{rendement.investit.toFixed(2)}}$</span></b>
+						<p>
+						<p> <b>Bénéfice:&nbsp;
+								<span
+									[style.color]="rendement.benefice > 0 ? 'green' : 'red'">{{rendement.benefice.toFixed(2)}}$</span></b>
+						<p>
+					</div>
+				</mat-card-content>
+
+			</mat-card>
+		</div>
+
+		<!-- Chargement skeleton -->
+		<div class="col" *ngIf="lineChartData.length == 0">
+			<mat-card class="example-card">
+				<ngx-skeleton-loader mat-card-avatar count="1" appearance="circle"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress" [theme]="{ width: '50%'}"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress" [theme]="{ width:'100%'}"></ngx-skeleton-loader>
+
+			</mat-card>
+		</div>
+		<div class="col" *ngIf="rendement == null">
+			<mat-card class="example-card">
+				<ngx-skeleton-loader mat-card-avatar count="1" appearance="circle"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress" [theme]="{ width: '50%'}"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress"></ngx-skeleton-loader>
+				<ngx-skeleton-loader animation="progress"></ngx-skeleton-loader>
+			</mat-card>
+		</div>
+
+	</div>
 </div>

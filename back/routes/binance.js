@@ -14,37 +14,61 @@ router.get('/', function (req, res, next) {
 
 router.get('/candles', function (req, res, next) {
   if (req.query && req.query.symbol && req.query.interval)
-    client.candles({ symbol: req.query.symbol, interval: req.query.interval }).then(candles => res.send(candles))
+    client.candles({ symbol: req.query.symbol.toUpperCase(), interval: req.query.interval }).then(candles => res.send(candles))
+    .catch(err => res.status(500).send({
+      message: 'Candles for symbol: ' + req.query.symbol + ' not found'
+    }))
   else
     res.status(400).send({
-      message: 'Arguments manquants !'
+      message: 'Arguments missings !'
     });
 })
 
 router.get('/openOrders', function (req, res, next) {
   if (req.query && req.query.symbol)
-    client.openOrders({ symbol: req.query.symbol }).then(ord => res.send(ord))
+    client.openOrders({ symbol: req.query.symbol.toUpperCase() }).then(ord => res.send(ord))
+    .catch(err => res.status(500).send({
+      message: 'Order for symbol: ' + req.query.symbol + ' not found'
+    }))
   else
     res.status(400).send({
-      message: 'Argument \'symbol\' manquant !'
+      message: 'Argument \'symbol\' missing !'
     });
 })
 
 router.get('/avgPrice', function (req, res, next) {
   if (req.query && req.query.symbol)
-    client.avgPrice({ symbol: req.query.symbol }).then(price => res.send(price))
+    client.avgPrice({ symbol: req.query.symbol.toUpperCase() }).then(price => res.send(price))
+    .catch(err => res.status(500).send({
+      message: 'AvgPrice for symbol: ' + req.query.symbol + ' not found'
+    }))
   else
     res.status(400).send({
-      message: 'Argument \'symbol\' manquant !'
+      message: 'Argument \'symbol\' missing !'
     });
 })
 
 router.get('/prices', function (req, res, next) {
   if (req.query && req.query.symbol)
-    client.prices({ symbol: req.query.symbol }).then(price => res.send(price))
+    client.prices({ symbol: req.query.symbol.toUpperCase() }).then(price => res.send(price))
+    .catch(err => res.status(500).send({
+      message: 'Prices for symbol: ' + req.query.symbol + ' not found'
+    }))
   else
     res.status(400).send({
-      message: 'Argument \'symbol\' manquant !'
+      message: 'Argument \'symbol\' missing !'
+    });
+})
+
+router.get('/getAllOrders', function (req, res, next) {
+  if (req.query && req.query.symbol)
+    client.allOrders({ symbol: req.query.symbol.toUpperCase() }).then(order => res.send(order))
+    .catch(err => res.status(500).send({
+      message: 'Order for symbol: ' + req.query.symbol + ' not found'
+    }))
+  else
+    res.status(400).send({
+      message: 'Argument \'symbol\' missing !'
     });
 })
 

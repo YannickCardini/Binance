@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment'
-import { Account, AvgPriceResult, CandleChartResult, QueryOrderResult } from 'binance-api-node';
+import { Account, AvgPriceResult, CandleChartResult, QueryOrderResult, TradeResult } from 'binance-api-node';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,6 +34,14 @@ export class BinanceApiService {
       params: {
         symbol :sym,
         interval: interval
+      }
+    }).toPromise();
+  }
+
+  getAllOrders(sym: string): Promise<QueryOrderResult[]>{
+    return this.http.get<QueryOrderResult[]>(environment.APIENDPOINT + 'binance/getAllOrders', {
+      params: {
+        symbol :sym,
       }
     }).toPromise();
   }

@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { BinanceApiService } from 'src/app/services/binance-api.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartDataSets } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color } from 'ng2-charts';
+import { QueryOrderResult } from 'binance-api-node';
+
+export class Rendement {
+  investit: number;
+  benefice: number;
+}
+
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
@@ -13,6 +20,7 @@ export class GraphComponent implements OnInit {
   title: string;
   interval: string = '1d';
   sym: string;
+  rendement: Rendement;
   backgroundImg: string;
   lineChartData: ChartDataSets[] = [];
   lineChartLabels: Date[];
@@ -51,6 +59,7 @@ export class GraphComponent implements OnInit {
 
 
 
+
   constructor(
     private route: ActivatedRoute,
     private bianceApi: BinanceApiService,
@@ -63,6 +72,7 @@ export class GraphComponent implements OnInit {
         this.title = this.sym + " chart";
         this.backgroundImg = "background-image: url(" + this.bianceApi.getAssetIcon(this.sym) + ")";
         this.getCandles(this.sym, this.interval);
+        this.getOrders(this.sym);
       });
   }
 
@@ -74,18 +84,80 @@ export class GraphComponent implements OnInit {
   }
 
   async getCandles(sym: string, interval: string): Promise<void> {
-    if(sym == "USDT")
+    if (sym == "USDT")
       sym = "USDC"
     const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
     this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym }]
     this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
   }
 
+  async getPrice(sym: string): Promise<number> {
+    let price = await this.bianceApi.getPrice(sym + "USDT");
+    return +price[sym + "USDT"];
+  }
+
+  async getOrders(sym: string): Promise<void> {
+    const fiat = ["USDT", "BUSD", "EUR", "BNB"];
+    let res: QueryOrderResult[] = [];
+    for (let i = 0; i < fiat.length; i++) {
+      const f = fiat[i];
+      res = await this.bianceApi.getAllOrders(sym + f).catch(err => null);
+      if(res == null)
+        continue
+      if (res.length > 0){
+        const rendement = await this.parseOrder(res);
+        if(this.rendement == null)
+          this.rendement = rendement;
+        else{
+          this.rendement.benefice += rendement.benefice;
+          this.rendement.investit += rendement.investit;
+        }
+      }
+    }
+  }
+
   intervalChange(value: number) {
     const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
       '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
-      this.interval = intervals[value];
-    this.getCandles(this.sym,this.interval);
+    this.interval = intervals[value];
+    this.getCandles(this.sym, this.interval);
+  }
+
+  async parseOrder(orders: QueryOrderResult[]): Promise<Rendement> {
+    let res: Rendement = {benefice: 0,investit: 0};
+    let buy = 0;
+    let sell = 0;
+    let quantity = 0;
+    orders.forEach(order => {
+      if (order.status == "FILLED") {
+        if (order.side == "BUY"){
+          buy += (+order.price * +order.origQty)
+        }
+        if (order.side == "SELL"){
+          sell += (+order.price * +order.origQty)
+        }
+      }
+    })
+    console.log(orders)
+    if(buy == 0 && sell == 0)
+      return res;
+    const acc = await this.bianceApi.getAccountInfo();
+    const ass = acc.balances.filter(bal => bal.asset == this.sym);
+    quantity = +ass[0].free + +ass[0].locked;
+
+    const sym = orders[0].symbol.substr(-3);
+    if(sym == "EUR" || sym == "BNB"){
+      const p = await this.getPrice(sym);
+      sell = sell * p;
+      buy = buy * p;
+    }
+      
+    res.benefice = (sell + await this.getPrice(this.sym) * quantity) - buy;
+    res.investit = buy;
+
+    console.log(res)
+
+    return res;
   }
 
 }
