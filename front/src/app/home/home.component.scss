@@ -123,3 +123,21 @@ a:hover {
         display: none;
     } 
 }
+
+.crypto-text{
+    @media only screen and (max-width: 1200px){
+        display: none;
+    }
+}
+
+.resume-text{
+    @media only screen and (max-height: 532px){
+        display: none;
+    }
+}
+.img-cool{
+    margin:1%;
+    @media only screen and (max-height: 372px){
+        display: none;
+    }
+}
