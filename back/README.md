@@ -22,6 +22,10 @@ Run docker image:
 docker run -p 3000:3000 -d binance-node
 ```
 
+Save the image to a tar.gz:
+```
+docker save binance-node:latest | gzip > binance-node.tar.gz
+```
 
 ## Issues
 
