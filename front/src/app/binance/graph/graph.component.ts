@@ -4,7 +4,6 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartDataSets } from 'chart.js';
 import { Color } from 'ng2-charts';
 import { QueryOrderResult } from 'binance-api-node';
-
 export class Rendement {
   investit: number;
   benefice: number;
@@ -57,9 +56,6 @@ export class GraphComponent implements OnInit {
   lineChartPlugins = [];
   lineChartType: string = 'line';
 
-
-
-
   constructor(
     private route: ActivatedRoute,
     private bianceApi: BinanceApiService,
@@ -92,6 +88,8 @@ export class GraphComponent implements OnInit {
   }
 
   async getPrice(sym: string): Promise<number> {
+    if(sym == "USDT")
+      return new Promise(resolve => {resolve(1.00)});
     let price = await this.bianceApi.getPrice(sym + "USDT");
     return +price[sym + "USDT"];
   }

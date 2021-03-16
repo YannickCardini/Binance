@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  APIENDPOINT:  'http://152.228.137.245:3000',//'http://localhost:3000/',
+  APIENDPOINT:  'http://localhost:3000/',
 
 };
 
