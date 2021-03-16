@@ -1,12 +1,15 @@
-# Stage 1
-FROM node:10-alpine as build-step
-RUN mkdir -p /app
-WORKDIR /app
-COPY package.json /app
+FROM node:12.16.1-alpine As builder
+
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json ./
+
 RUN npm install
-COPY . /app
+
+COPY . .
+
 RUN npm run build --prod
- 
-# Stage 2
-FROM nginx:1.17.1-alpine
-COPY --from=build-step /app/dist /usr/share/nginx/html
+
+FROM nginx:1.15.8-alpine
+
+COPY --from=builder /usr/src/app/dist/Binance/ /usr/share/nginx/html

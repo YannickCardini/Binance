@@ -22,3 +22,7 @@ Run docker image:
 docker run -p 80:80 -d binance-angular
 ```
 
+Save the image to a tar.gz:
+```
+docker save binance-angular:latest | gzip > binance-angular.tar.gz
+```
