@@ -1,5 +1,6 @@
 # Binance
 Front en angular et back en NodeJS qui utilise l'[API de Binance](https://binance-docs.github.io/apidocs/spot/en/#introduction) pour visualiser l'évolution de mes cryptomonnaies.
+Le site est hébergé sur hosteur (RIP OVH) et est disponible à l'url suivante: [yannickcardini.com](http://yannickcardini.com).
 
 ## Prérequis
 
