@@ -20,15 +20,18 @@ import { ResumeComponent } from './resume/resume.component';
 import { GraphComponent } from './binance/graph/graph.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule } from 'ng2-charts';
+import { GalleryComponent } from './gallery/gallery.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     BinanceComponent,
+    GalleryComponent,
+    GraphComponent,
     HomeComponent,
     ResumeComponent,
-    GraphComponent,
   ],
+
   imports: [
     AppRoutingModule,
     BrowserModule,

@@ -30,6 +30,11 @@ export class AppComponent {
       name: 'Resume',
       link: '/resume'
     },
+    {
+      icon: 'science',
+      name: 'Gallery',
+      link: '/gallery'
+    },
   ];
 
   constructor() {
