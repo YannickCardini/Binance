@@ -9,8 +9,10 @@ export class GalleryComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  loaded:Array<boolean> = new Array(42);
 
+  ngOnInit(): void {
+    this.loaded.fill(false);
   }
 
 }
