@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartDataSets } from 'chart.js';
 import { Color } from 'ng2-charts';
 import { QueryOrderResult } from 'binance-api-node';
+import { NomicsApiService } from 'src/app/services/nomics-api.service';
 export class Rendement {
   investit: number;
   benefice: number;
@@ -59,6 +60,7 @@ export class GraphComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bianceApi: BinanceApiService,
+    private nomicsApi: NomicsApiService
   ) { }
 
   ngOnInit() {
@@ -88,10 +90,18 @@ export class GraphComponent implements OnInit {
   }
 
   async getPrice(sym: string): Promise<number> {
-    if(sym == "USDT")
-      return new Promise(resolve => {resolve(1.00)});
+    if (sym == "USDT")
+      return new Promise(resolve => { resolve(1.00) });
     let price = await this.bianceApi.getPrice(sym + "USDT");
     return +price[sym + "USDT"];
+  }
+
+  //Récupere le prix en USD au moment de l'achat
+  async getPriceAtTime(sym: string, time: string): Promise<string> {
+    if (sym == "USDT")
+      return new Promise(resolve => { resolve('1.00') });
+    let price = await this.nomicsApi.getPriceAtTime(sym, time);
+    return price[0].rate;
   }
 
   async getOrders(sym: string): Promise<void> {
@@ -100,13 +110,13 @@ export class GraphComponent implements OnInit {
     for (let i = 0; i < fiat.length; i++) {
       const f = fiat[i];
       res = await this.bianceApi.getAllOrders(sym + f).catch(err => null);
-      if(res == null)
+      if (res == null)
         continue
-      if (res.length > 0){
+      if (res.length > 0) {
         const rendement = await this.parseOrder(res);
-        if(this.rendement == null)
+        if (this.rendement == null)
           this.rendement = rendement;
-        else{
+        else {
           this.rendement.benefice += rendement.benefice;
           this.rendement.investit += rendement.investit;
         }
@@ -121,39 +131,44 @@ export class GraphComponent implements OnInit {
     this.getCandles(this.sym, this.interval);
   }
 
+  //@TODO je me suis un peu perdu, actualiser le prix en fonction de la monnaie avec laqeulle j'ai acheté
   async parseOrder(orders: QueryOrderResult[]): Promise<Rendement> {
-    let res: Rendement = {benefice: 0,investit: 0};
+    let res: Rendement = { benefice: 0, investit: 0 };
     let buy = 0;
     let sell = 0;
     let quantity = 0;
-    orders.forEach(order => {
-      if (order.status == "FILLED") {
-        if (order.side == "BUY"){
+    const dateMin = new Date("01/01/2020");
+    // Les ids des ordres a exclure, par exemple pour l'achat de flynn
+    const exceptionIds = ["and_cc94f3d06c36437daf00efc6de434dee"];
+    orders.forEach(async order => {
+      if (order.status == "FILLED" && new Date(order.time) > dateMin && !exceptionIds.includes(order.clientOrderId)) {
+
+        //Si achetais en BNB ou EUR on convertit en dollar
+        // let sym = order.symbol.substr(-3);
+        // if (sym !== "SDT")
+        //     order.price = await this.getPriceAtTime(sym, order.time.toString());
+        
+        // else if (+order.price == 0)
+        //   order.price = (+order.origQuoteOrderQty / +order.origQty).toString();
+
+        if (order.side == "BUY") {
           buy += (+order.price * +order.origQty)
         }
-        if (order.side == "SELL"){
+        if (order.side == "SELL") {
           sell += (+order.price * +order.origQty)
         }
+        console.log(buy,sell)
       }
     })
     console.log(orders)
-    if(buy == 0 && sell == 0)
+    if (buy == 0 && sell == 0)
       return res;
     const acc = await this.bianceApi.getAccountInfo();
     const ass = acc.balances.filter(bal => bal.asset == this.sym);
     quantity = +ass[0].free + +ass[0].locked;
 
-    const sym = orders[0].symbol.substr(-3);
-    if(sym == "EUR" || sym == "BNB"){
-      const p = await this.getPrice(sym);
-      sell = sell * p;
-      buy = buy * p;
-    }
-      
     res.benefice = (sell + await this.getPrice(this.sym) * quantity) - buy;
     res.investit = buy;
-
-    console.log(res)
 
     return res;
   }

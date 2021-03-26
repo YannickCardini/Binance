@@ -29,8 +29,8 @@
 		<mat-divider></mat-divider>
 		<span *ngFor="let asset of assets">
 			<mat-action-list>
-				<button mat-list-item [routerLink]="'/cryptos/' + asset.nom">
-					<img matListIcon [src]="asset.icon">
+				<button mat-list-item >
+					<img matListIcon [src]="asset.icon" (click)="openAssetDetails($event,asset)">
 					<h3 matLine>{{asset.nom}}</h3>
 					<p matLine><i>Quantity: </i>&nbsp;{{asset.quantite}}</p>
 					<p matLine><i>Prix à l'unité: </i>&nbsp;<span class="dollar">${{asset.prix.toFixed(2)}}</span></p>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { env } from '../environments/environment'
+import { environment } from 'src/environments/environment'
 import { NomicsPrices } from '../models/nomics-prices.model';
 
 @Injectable({
@@ -12,8 +12,13 @@ export class NomicsApiService {
     private http: HttpClient
   ) { }
 
-  getPrices(): Promise<NomicsPrices[]> {
-    return this.http.get<NomicsPrices[]>(env.APIENDPOINT + 'nomics/prices').toPromise();
+  getPriceAtTime(sym: string, time: string): Promise<NomicsPrices[]> {
+    return this.http.get<NomicsPrices[]>(environment.APIENDPOINT + 'nomics/getPriceAtTime', {
+      params: {
+        symbol: sym,
+        time: time
+      }
+    }).toPromise();
   }
 
 }

@@ -65,6 +65,12 @@ export class BinanceComponent implements OnInit {
     });
   }
 
+  openAssetDetails(ev:MouseEvent,asset: MyAssets){
+    ev.preventDefault();
+    const url = window.location.href + '/' + asset.nom;
+    window.open(url, "_blank");
+  }
+
   orderBalances(ass: AssetBalance[]): AssetBalance[] {
     function compare(a, b) {
       if (a.asset < b.asset) {

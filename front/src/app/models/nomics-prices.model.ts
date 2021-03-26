@@ -1,4 +1,4 @@
 export class NomicsPrices{
-	currency: string;
-	price: string;
+	timestamp: string;
+	rate: string;
 }
