@@ -29,8 +29,8 @@
 		<mat-divider></mat-divider>
 		<span *ngFor="let asset of assets">
 			<mat-action-list>
-				<button mat-list-item >
-					<img matListIcon [src]="asset.icon" (click)="openAssetDetails($event,asset)">
+				<button mat-list-item [routerLink]="'/cryptos/' + asset.nom">
+					<img matListIcon [src]="asset.icon" >
 					<h3 matLine>{{asset.nom}}</h3>
 					<p matLine><i>Quantity: </i>&nbsp;{{asset.quantite}}</p>
 					<p matLine><i>Prix à l'unité: </i>&nbsp;<span class="dollar">${{asset.prix.toFixed(2)}}</span></p>
@@ -39,18 +39,6 @@
 			</mat-action-list>
 			<mat-divider></mat-divider>
 		</span>
-
-		<!--Buffa coin-->
-		<mat-action-list >
-			<button mat-list-item (click)="open(content)">
-				<img matListIcon src="./assets/svg/buffa.png">
-				<h3 matLine>BUFFA</h3>
-				<p matLine><i>Quantity: </i>&nbsp;0</p>
-				<p matLine><i>Prix à l'unité: </i>&nbsp;<span class="dollar">$100.00</span></p>
-				<span style="color:green">$0.00</span>
-			</button>
-		</mat-action-list>
-		<mat-divider></mat-divider>
 
 	</mat-list>
 </div>

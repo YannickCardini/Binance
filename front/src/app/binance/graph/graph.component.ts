@@ -85,7 +85,8 @@ export class GraphComponent implements OnInit {
     if (sym == "USDT")
       sym = "USDC"
     const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
-    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym }]
+    const mostRecentPrice = candles.slice(-1)[0].open;
+    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym + ' (' + mostRecentPrice.substring(0,4) + '$)' }]
     this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
   }
 
@@ -97,11 +98,11 @@ export class GraphComponent implements OnInit {
   }
 
   //Récupere le prix en USD au moment de l'achat
-  async getPriceAtTime(sym: string, time: string): Promise<string> {
+  async getPriceAtTime(sym: string, time: string): Promise<number> {
     if (sym == "USDT")
-      return new Promise(resolve => { resolve('1.00') });
+      return new Promise(resolve => { resolve(1.00) });
     let price = await this.nomicsApi.getPriceAtTime(sym, time);
-    return price[0].rate;
+    return +price[0].rate;
   }
 
   async getOrders(sym: string): Promise<void> {
@@ -140,27 +141,26 @@ export class GraphComponent implements OnInit {
     const dateMin = new Date("01/01/2020");
     // Les ids des ordres a exclure, par exemple pour l'achat de flynn
     const exceptionIds = ["and_cc94f3d06c36437daf00efc6de434dee"];
-    orders.forEach(async order => {
-      if (order.status == "FILLED" && new Date(order.time) > dateMin && !exceptionIds.includes(order.clientOrderId)) {
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
+
+      if (order.status == "FILLED" && !exceptionIds.includes(order.clientOrderId)) {
+        if (+order.price == 0)
+          order.price = (+order.origQuoteOrderQty / +order.origQty).toString();
 
         //Si achetais en BNB ou EUR on convertit en dollar
-        // let sym = order.symbol.substr(-3);
-        // if (sym !== "SDT")
-        //     order.price = await this.getPriceAtTime(sym, order.time.toString());
-        
-        // else if (+order.price == 0)
-        //   order.price = (+order.origQuoteOrderQty / +order.origQty).toString();
-
-        if (order.side == "BUY") {
+        let sym = order.symbol.substr(-3);
+        if (sym !== "SDT") {
+          const p = await this.getPriceAtTime(sym, order.time.toString());
+          order.price = (+order.price * p).toString();
+        }
+        if (order.side == "BUY") 
           buy += (+order.price * +order.origQty)
-        }
-        if (order.side == "SELL") {
+        if (order.side == "SELL") 
           sell += (+order.price * +order.origQty)
-        }
-        console.log(buy,sell)
       }
-    })
-    console.log(orders)
+    }
+
     if (buy == 0 && sell == 0)
       return res;
     const acc = await this.bianceApi.getAccountInfo();
