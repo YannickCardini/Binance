@@ -50,7 +50,7 @@
 		</div>
 
 		<!-- Chargement skeleton -->
-		<div class="col" *ngIf="lineChartData.length == 0">
+		<div class="col" *ngIf="rendement == null">
 			<mat-card class="example-card">
 				<ngx-skeleton-loader mat-card-avatar count="1" appearance="circle"></ngx-skeleton-loader>
 				<ngx-skeleton-loader animation="progress" [theme]="{ width: '50%'}"></ngx-skeleton-loader>
