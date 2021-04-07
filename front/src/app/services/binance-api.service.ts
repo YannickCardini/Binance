@@ -21,34 +21,34 @@ export class BinanceApiService {
     return './assets/svg/' + icon + '.svg';
   }
 
-  getAvgPrice(sym: string): Promise<AvgPriceResult| AvgPriceResult[]> {
-    return this.http.get<AvgPriceResult| AvgPriceResult[]>(environment.APIENDPOINT + 'binance/avgPrice', {
+  getAvgPrice(sym: string): Promise<AvgPriceResult | AvgPriceResult[]> {
+    return this.http.get<AvgPriceResult | AvgPriceResult[]>(environment.APIENDPOINT + 'binance/avgPrice', {
       params: {
         symbol: sym
       }
     }).toPromise();
   }
 
-  getCandles(sym: string, interval: string): Promise<CandleChartResult[]>{
+  getCandles(sym: string, interval: string): Promise<CandleChartResult[]> {
     return this.http.get<CandleChartResult[]>(environment.APIENDPOINT + 'binance/candles', {
       params: {
-        symbol :sym,
+        symbol: sym,
         interval: interval
       }
     }).toPromise();
   }
 
-  getAllOrders(sym: string): Promise<QueryOrderResult[]>{
+  getAllOrders(sym: string): Promise<QueryOrderResult[]> {
     return this.http.get<QueryOrderResult[]>(environment.APIENDPOINT + 'binance/getAllOrders', {
       params: {
-        symbol :sym,
+        symbol: sym,
       }
     }).toPromise();
   }
 
   getPrice(sym: string): Promise<Object> {
-    if(sym === "USDTUSDT")
-      return new Promise(resolve => resolve({"USDTUSDT":1.0}))
+    if (sym === "USDTUSDT")
+      return new Promise(resolve => resolve({ "USDTUSDT": 1.0 }))
     return this.http.get<Object>(environment.APIENDPOINT + 'binance/prices', {
       params: {
         symbol: sym

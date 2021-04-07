@@ -93,8 +93,10 @@ export class GraphComponent implements OnInit {
   async getPrice(sym: string): Promise<number> {
     if (sym == "USDT")
       return new Promise(resolve => { resolve(1.00) });
-    let price = await this.bianceApi.getPrice(sym + "USDT");
+    let price = await this.bianceApi.getPrice(sym + "USDT")
     return +price[sym + "USDT"];
+
+
   }
 
   //Récupere le prix en USD au moment de l'achat
@@ -106,7 +108,7 @@ export class GraphComponent implements OnInit {
   }
 
   async getOrders(sym: string): Promise<void> {
-    const fiat = ["USDT", "BUSD", "EUR", "BNB"];
+    const fiat = ["USDT", "BUSD", "EUR", "BNB", "BTC"];
     let res: QueryOrderResult[] = [];
     for (let i = 0; i < fiat.length; i++) {
       const f = fiat[i];
@@ -148,10 +150,9 @@ export class GraphComponent implements OnInit {
         if (+order.price == 0)
           order.price = (+order.origQuoteOrderQty / +order.origQty).toString();
 
-        //Si achetais en BNB ou EUR on convertit en dollar
-        let sym = order.symbol.substr(-3);
-        if (sym !== "SDT") {
-          const p = await this.getPriceAtTime(sym, order.time.toString());
+        //Si achetais en monnaie différente de l'USD 
+        if (order.symbol.includes("USD")) {
+          const p = await this.getPriceAtTime(order.symbol.substring(-3), order.time.toString());
           order.price = (+order.price * p).toString();
         }
         if (order.side == "BUY") 
