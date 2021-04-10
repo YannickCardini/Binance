@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BinanceApiService } from '../services/binance-api.service';
 import { Account, AssetBalance } from 'binance-api-node';
 import { MyAssets } from '../models/my-assets.model';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-binance',
@@ -18,7 +18,6 @@ export class BinanceComponent implements OnInit {
 
   constructor(
     private bianceApi: BinanceApiService,
-    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -27,11 +26,15 @@ export class BinanceComponent implements OnInit {
 
   async buildListBalance(acc: Account): Promise<void> {
     let balances = acc.balances.filter(bal => +bal.free > 0);
+    console.log(balances)
     balances = this.orderBalances(balances);
     let asset: MyAssets;
     for (let i = 0; i < balances.length; i++) {
       const bal = balances[i];
-      let price = await this.bianceApi.getPrice(bal.asset + "USDT");
+      let price = await this.getPrice(bal);
+      console.log("price:", price)
+      if(price == null)
+        continue;
       asset = {
         quantite: +bal.free + +bal.locked,
         nom: bal.asset,
@@ -57,12 +60,11 @@ export class BinanceComponent implements OnInit {
     }
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title',size:'lg'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  async getPrice(bal: AssetBalance): Promise<Object>{
+    const res = await this.bianceApi.getPrice(bal.asset + "USDT").catch(err =>{
+      return null;
     });
+    return res;
   }
 
   orderBalances(ass: AssetBalance[]): AssetBalance[] {

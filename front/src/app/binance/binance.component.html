@@ -1,24 +1,3 @@
-<!-- Modal -->
-<ng-template #content let-modal>
-	<div class="modal-header">
-	  <h4 class="modal-title" id="modal-basic-title">Buffa coin</h4>
-	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-		<span aria-hidden="true">&times;</span>
-	  </button>
-	</div>
-	<div class="modal-body">
-		<video controls width="100%" autoplay>
-		
-			<source src="../../assets/video/rick_roll.mp4"
-					type="video/mp4" >
-		
-			Sorry, your browser doesn't support embedded videos.
-		</video>
-	</div>
-  </ng-template>
-
-
-
 <div class="total-value">
 	<span class="total-value">Total value:</span>
 	<span class="dollar" style="font-size: 26px;" *ngIf="totalValue > 0"> ${{totalValue.toFixed(2)}}</span>
