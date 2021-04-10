@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BinanceApiService } from 'src/app/services/binance-api.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ChartDataSets } from 'chart.js';
-import { Color } from 'ng2-charts';
-import { QueryOrderResult } from 'binance-api-node';
+import { CandleChartResult, QueryOrderResult } from 'binance-api-node';
 import { NomicsApiService } from 'src/app/services/nomics-api.service';
+import { stockChart } from 'highcharts/highstock';
+
 export class Rendement {
   investit: number;
   benefice: number;
@@ -18,44 +18,10 @@ export class Rendement {
 export class GraphComponent implements OnInit {
 
   title: string;
-  interval: string = '1d';
   sym: string;
   rendement: Rendement;
-  backgroundImg: string;
-  lineChartData: ChartDataSets[] = [];
-  lineChartLabels: Date[];
-  lineChartOptions = {
-    responsive: true,
-    scales: {
-      xAxes: [{
-        type: 'time',
-        time: {
-          displayFormats: {
-            quarter: 'MMM YYYY'
-          }
-        },
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Price in $'
-        }
-      }]
-    },
-    yHighlightRange: {
-      begin: 0.5,
-      end: 0.6
-    },
-  };
-  lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,255,0,0.28)',
-    },
-  ];
-  lineChartLegend: boolean = true;
-  lineChartPlugins = [];
-  lineChartType: string = 'line';
+  backgroundImg: string; 
+  dataRetrived: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,25 +35,20 @@ export class GraphComponent implements OnInit {
         this.sym = res.get('sym');
         this.title = this.sym + " chart";
         this.backgroundImg = "background-image: url(" + this.bianceApi.getAssetIcon(this.sym) + ")";
-        this.getCandles(this.sym, this.interval);
+        this.getCandles(this.sym, "1d");
         this.getOrders(this.sym);
       });
-  }
-
-  formatLabel(value: number) {
-    const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
-      '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
-    this.interval = intervals[value];
-    return this.interval;
   }
 
   async getCandles(sym: string, interval: string): Promise<void> {
     if (sym == "USDT")
       sym = "USDC"
     const candles = await this.bianceApi.getCandles(sym + "USDT", interval);
-    const mostRecentPrice = candles.slice(-1)[0].open;
-    this.lineChartData = [{ data: candles.map(candle => +candle.open), label: sym + ' (' + mostRecentPrice.substring(0,4) + '$)' }]
-    this.lineChartLabels = candles.map(candle => new Date(candle.openTime));
+    let data = [];
+    candles.forEach((candle: CandleChartResult) => {
+      data.push([+candle.openTime, +candle.open, +candle.high, +candle.low, +candle.close])
+    });
+    this.renderChart(data);
   }
 
   async getPrice(sym: string): Promise<number> {
@@ -95,8 +56,6 @@ export class GraphComponent implements OnInit {
       return new Promise(resolve => { resolve(1.00) });
     let price = await this.bianceApi.getPrice(sym + "USDT")
     return +price[sym + "USDT"];
-
-
   }
 
   //Récupere le prix en USD au moment de l'achat
@@ -104,7 +63,10 @@ export class GraphComponent implements OnInit {
     if (sym == "USDT")
       return new Promise(resolve => { resolve(1.00) });
     let price = await this.nomicsApi.getPriceAtTime(sym, time);
-    return +price[0].rate;
+    if(price[0].rate)
+      return +price[0].rate;
+    else
+      return 
   }
 
   async getOrders(sym: string): Promise<void> {
@@ -127,20 +89,18 @@ export class GraphComponent implements OnInit {
     }
   }
 
-  intervalChange(value: number) {
-    const intervals = ['1m', '3m', '5m', '15m', '30m', '1h', '2h',
-      '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'];
-    this.interval = intervals[value];
-    this.getCandles(this.sym, this.interval);
+  hideCardCandleStick(): string{
+    if(this.dataRetrived)
+      return "display:block;"; 
+    else
+      return "display:none;";
   }
 
-  //@TODO je me suis un peu perdu, actualiser le prix en fonction de la monnaie avec laqeulle j'ai acheté
   async parseOrder(orders: QueryOrderResult[]): Promise<Rendement> {
     let res: Rendement = { benefice: 0, investit: 0 };
     let buy = 0;
     let sell = 0;
     let quantity = 0;
-    const dateMin = new Date("01/01/2020");
     // Les ids des ordres a exclure, par exemple pour l'achat de flynn
     const exceptionIds = ["and_cc94f3d06c36437daf00efc6de434dee"];
     for (let i = 0; i < orders.length; i++) {
@@ -151,13 +111,13 @@ export class GraphComponent implements OnInit {
           order.price = (+order.origQuoteOrderQty / +order.origQty).toString();
 
         //Si achetais en monnaie différente de l'USD 
-        if (order.symbol.includes("USD")) {
+        if (!order.symbol.includes("USD")) {
           const p = await this.getPriceAtTime(order.symbol.substring(-3), order.time.toString());
           order.price = (+order.price * p).toString();
         }
-        if (order.side == "BUY") 
+        if (order.side == "BUY")
           buy += (+order.price * +order.origQty)
-        if (order.side == "SELL") 
+        if (order.side == "SELL")
           sell += (+order.price * +order.origQty)
       }
     }
@@ -172,6 +132,31 @@ export class GraphComponent implements OnInit {
     res.investit = buy;
 
     return res;
+  }
+
+  renderChart(data: Array<Array<number>>): void {
+    this.dataRetrived = true;
+    stockChart('container', {
+      rangeSelector: {
+        selected: 1
+      },
+      title: {
+        text: this.sym + " price evolution"
+      },
+      series: [{
+        type: 'candlestick',
+        name: 'AAPL Stock Price',
+        data: data,
+        dataGrouping: {
+          units: [
+            [ 'day',[1]], [
+              'month',
+              [1, 2, 3, 4, 6]
+            ]
+          ]
+        }
+      }]
+    });
   }
 
 }

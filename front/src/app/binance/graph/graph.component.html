@@ -1,24 +1,17 @@
 <div class="container">
 	<div class="row align-items-start">
 
-		<!-- Graph -->
-		<div class="col" *ngIf="lineChartData.length > 0">
+		<!-- Candlestick -->
+		<div class="col-12 col-lg-9" [style]="hideCardCandleStick()">
 			<mat-card class="example-card">
 				<mat-card-header>
 					<div mat-card-avatar class="example-header-image" [style]="backgroundImg"></div>
 					<mat-card-title>{{title}}</mat-card-title>
-					<mat-card-subtitle>{{lineChartType}} chart</mat-card-subtitle>
+					<mat-card-subtitle>Candlestick chart</mat-card-subtitle>
 				</mat-card-header>
-				<mat-card-actions style="text-align: center;">
-					<span style="display: block;">Interval({{interval}}):</span>
-					<mat-slider thumbLabel [displayWith]="formatLabel" (change)="intervalChange($event.value)"
-						tickInterval="1" value="11" min="0" max="14"></mat-slider>
-				</mat-card-actions>
-				<div class="chartjs-block">
-					<canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-						[colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
-						[plugins]="lineChartPlugins">
-					</canvas>
+
+				<div class="col" >
+					<div id="container" style="height: 400px; min-width: 310px"></div>
 				</div>
 
 			</mat-card>
@@ -50,7 +43,7 @@
 		</div>
 
 		<!-- Chargement skeleton -->
-		<div class="col" *ngIf="!(lineChartData.length > 0)">
+		<div class="col" *ngIf="!dataRetrived">
 			<mat-card class="example-card">
 				<ngx-skeleton-loader mat-card-avatar count="1" appearance="circle"></ngx-skeleton-loader>
 				<ngx-skeleton-loader animation="progress" [theme]="{ width: '50%'}"></ngx-skeleton-loader>
@@ -67,6 +60,8 @@
 				<ngx-skeleton-loader animation="progress"></ngx-skeleton-loader>
 			</mat-card>
 		</div>
+
+
 
 	</div>
 </div>
