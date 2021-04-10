@@ -63,7 +63,7 @@ export class GraphComponent implements OnInit {
     if (sym == "USDT")
       return new Promise(resolve => { resolve(1.00) });
     let price = await this.nomicsApi.getPriceAtTime(sym, time);
-    if(price[0].rate)
+    if(price && price.length > 0)
       return +price[0].rate;
     else
       return 
@@ -112,7 +112,9 @@ export class GraphComponent implements OnInit {
 
         //Si achetais en monnaie différente de l'USD 
         if (!order.symbol.includes("USD")) {
-          const p = await this.getPriceAtTime(order.symbol.substring(-3), order.time.toString());
+          console.log(order.symbol.substr(-3))
+          const p = await this.getPriceAtTime(order.symbol.substr(-3), order.time.toString());
+          console.log(p)
           order.price = (+order.price * p).toString();
         }
         if (order.side == "BUY")
